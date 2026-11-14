@@ -155,8 +155,8 @@ def fig_c1():
 def fig_c2():
     c = S["C2_minute10_idle_check"]
     fig = frame("A minute-10 check finds 97% of GPUs that stay idle, with 11% false alarms",
-                "Flag a GPU if it was < 5% busy over its first 10 minutes. Batch jobs longer than 10 min, "
-                "users the model never saw.",
+                "A fixed rule, no training: flag a GPU if it was < 5% busy over its first 10 minutes. "
+                "Batch jobs longer than 10 min.",
                 "confirmed",
                 "Source: firstrun_realusers_confirm/results/scores.json. Criteria committed in git (89bda07, "
                 "2026-10-21) before the test jobs were selected. " + MIT)

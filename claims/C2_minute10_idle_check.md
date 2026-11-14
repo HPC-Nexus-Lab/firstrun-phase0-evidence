@@ -12,13 +12,14 @@
 
 ## The test
 
-- **Rule:** flag a GPU if its mean utilisation over the first 10 minutes is under 5%.
+- **Rule:** flag a GPU if its mean utilisation over the first 10 minutes is under 5%. This is a fixed threshold,
+  not a trained model, so nothing was fitted to any user's jobs.
 - **Truth:** the GPU stays idle (mean utilisation under 5%) for the whole run.
 - **Test jobs:** each real user's next 4 GPU jobs (jobs 5–8 by submit time): 956 jobs from 251 users, none used in
   development. Scored on every GPU of a batch job longer than 10 minutes.
-- **Users the model never saw:** users keep the 10 groups of the development study; each group is scored by
-  models built only on the other 9 groups' earlier jobs.
 - **Pass if** recall ≥ 90% and false alarms ≤ 15%.
+
+The test is whether a rule chosen on users' first jobs still holds on jobs that no analysis had touched.
 
 ## Result
 

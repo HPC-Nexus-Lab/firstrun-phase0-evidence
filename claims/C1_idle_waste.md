@@ -31,9 +31,10 @@ Energy, users' first 4 jobs (1,125 jobs, 310 users, 2,721 kWh of GPU energy):
 
 ## How to read it
 
-- **"Largest" is true by count of GPUs and GPU-hours.** By energy it depends on TIMEOUT runs: three very large
-  TIMEOUT jobs from two users carry 39% of all GPU energy, and many TIMEOUTs are long jobs that were continued, not
-  wasted. Idle GPUs are the largest form of waste unless most TIMEOUT energy is counted as waste.
+- **"Largest" holds by how often it happens:** about half of all batch GPUs reserved in users' first jobs did no
+  work at all. By energy it depends on TIMEOUT runs (jobs killed at their time limit): three very large TIMEOUT jobs
+  from two users carry 39% of all GPU energy, and many TIMEOUTs are long jobs that were continued, not wasted. Idle
+  GPUs (12.1%) outweigh failed runs (8.2%) unless most TIMEOUT energy is counted as waste.
 - **The 52% is development data**; the 44% is on jobs no analysis had touched. Removing the five largest jobs
   raises the held-out share to 46% (smaller denominator), so the drop from the first jobs is modest either way.
 - GPU energy only: host CPU, memory and network power are not in the data.

@@ -18,8 +18,9 @@ Listed beside the claims on purpose: the negative results shaped the proposal as
 
 - **Not Boole.** MIT Supercloud academic users on V100 GPUs, 2021–2022. CloudCIX customers, B200 hardware and job
   mix may differ; WP1 measures Boole's own baseline before targets are fixed.
-- **"Unseen users" through a group protocol.** The held-out jobs are later jobs of the same users; users are unseen
-  only in the sense that each is scored by models built on other users' jobs.
+- **"Unseen users" through a group protocol.** The held-out jobs are later jobs of the same users. For the failure
+  warning (C3), users are unseen only in the sense that each is scored by a model built on other users' jobs; a
+  user's later jobs may repeat their early ones.
 - **GPU energy only.** Host CPU, memory and network power are not in the public data.
 - **Giant jobs.** Five jobs hold 44% of held-out GPU energy; every pre-registered criterion is also reported without
   them, and energy shares are quoted as ranges.
