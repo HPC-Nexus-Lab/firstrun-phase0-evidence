@@ -1,7 +1,7 @@
 # FirstRun · Phase 0 evidence
 
 Supporting evidence for the Research Ireland Industry Fellowship proposal **"FirstRun: Risk- and Energy-Aware
-Agentic Onboarding of New Workloads on a Commercial GPU Supercomputer"** (Dr Tautvydas Lisas, TU Dublin, with
+Agentic Onboarding of New Workloads on a Commercial GPU Supercomputer"** (Dr Tautvydas Lisas, Tania Malik TU Dublin, with
 CloudCIX). The proposal is complete without this page. This repository only shows where its Phase 0 numbers come
 from.
 
