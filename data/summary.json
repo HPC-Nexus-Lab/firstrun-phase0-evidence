@@ -1,0 +1,128 @@
+{
+  "_about": "Every number used in the figures and claim pages. Aggregates only: no per-job or per-GPU rows. Each block names the private result file it was copied from (paths relative to the author's Phase 0 workspace).",
+  "_data_licence": "MIT Supercloud Dataset (Samsi et al., IEEE HPEC 2021) and Elsayed et al. (Scientific Data 2026) are CC BY-NC-ND 4.0: summary numbers and figures only, with attribution.",
+
+  "C1_idle_waste": {
+    "evidence": "development + held-out (re-scored with frozen v0.3 code)",
+    "source": "firstrun_realusers_confirm/results/scores.json (development_reference.C1_idle_rule, criteria.C1_idle_rule); REALUSER_CONFIRMATION.md row C1",
+    "definition": "Batch-job GPUs of jobs longer than 10 min; idle = whole-run mean utilisation < 5%.",
+    "idle_batch_gpus": {
+      "jobs_1_4": {"idle": 587, "gpus": 1129, "label": "Users' first 4 jobs (development)"},
+      "jobs_5_8": {"idle": 472, "gpus": 1085, "label": "Users' next 4 jobs (held-out)"},
+      "jobs_5_8_excl_top5": {"idle": 472, "gpus": 1024, "label": "Next 4 jobs, without the 5 largest"}
+    },
+    "energy_jobs_1_4": {
+      "source": "firstrun_realusers/results/REALUSERS.md section 4; TIMEOUT_RESUBMITS.md line 64",
+      "jobs": 1125, "users": 310, "total_gpu_energy_kwh": 2721.2,
+      "idle_gpu_energy_pct": 12.1,
+      "failed_run_energy_pct_timeout_excluded": 8.2,
+      "failed_run_energy_pct_all_timeout_counted": 54.6
+    },
+    "heldout_flagged_idle_energy_after_10min_pct_of_batch_energy": {"all": 5.8, "excl_top5": 10.8}
+  },
+
+  "C2_minute10_idle_check": {
+    "evidence": "pre-registered, held-out",
+    "source": "firstrun_realusers_confirm/results/scores.json (criteria.C1_idle_rule); criteria committed in git 89bda07",
+    "targets": {"recall_min_pct": 90, "false_alarm_max_pct": 15},
+    "rows": [
+      {"label": "Jobs 1-4 (development, same code)", "recall": 98.1, "recall_ci": [96.7, 99.0], "false_alarm": 9.6, "false_alarm_ci": [7.5, 12.1], "idle_gpus": 587, "gpus": 1129},
+      {"label": "Jobs 5-8 (held-out, primary)", "recall": 96.6, "recall_ci": [94.6, 97.9], "false_alarm": 10.6, "false_alarm_ci": [8.2, 13.6], "idle_gpus": 472, "gpus": 1085},
+      {"label": "Jobs 5-8 without the 5 largest jobs", "recall": 96.6, "recall_ci": [94.6, 97.9], "false_alarm": 10.6, "false_alarm_ci": [8.2, 13.6], "idle_gpus": 472, "gpus": 1024}
+    ],
+    "verdict": "PASS"
+  },
+
+  "C3_failure_warning": {
+    "evidence": "pre-registered, held-out",
+    "source": "firstrun_realusers_confirm/results/scores.json (criteria.C2_failure_warning, secondary.failure_warning_returning_users, development_reference.C2_failure_warning)",
+    "threshold_auroc": 0.70,
+    "rows": [
+      {"label": "Jobs 1-4, unseen users (development)", "auroc": 0.78, "ci": [0.74, 0.82], "failing": 222, "completing": 282, "kind": "development"},
+      {"label": "Jobs 5-8, unseen users (primary)", "auroc": 0.78, "ci": [0.73, 0.82], "failing": 175, "completing": 297, "kind": "primary"},
+      {"label": "Jobs 5-8, unseen users, without 5 largest", "auroc": 0.78, "ci": [0.74, 0.83], "failing": 173, "completing": 297, "kind": "primary"},
+      {"label": "Jobs 5-8, returning users (secondary)", "auroc": 0.88, "ci": [0.84, 0.91], "failing": 175, "completing": 297, "kind": "secondary"}
+    ],
+    "recall_at_10pct_false_alarms_pct": 54,
+    "verdict": "PASS"
+  },
+
+  "C4_sizing": {
+    "time_limits": {
+      "evidence": "pre-registered (R10), development real users",
+      "source": "firstrun_realusers/results/REALUSERS_VERDICT.md (R10); REALUSERS_POSTHOC.md section 4 (same 296 completed jobs, undeclared runtime)",
+      "target": "cut median reserved slack by >= 50% vs users' requests with energy overhead <= 10%",
+      "users_unlimited_pct": 43.6,
+      "points": [
+        {"label": "Users' own finite requests", "median_slack_h": 23.4, "energy_overhead_pct": 0.0},
+        {"label": "Forecast limit, set at submission", "median_slack_h": 48.6, "energy_overhead_pct": -0.2},
+        {"label": "Fixed 10-minute probe, then limit", "median_slack_h": 58.2, "energy_overhead_pct": 13.1},
+        {"label": "Stop rule, then limit", "median_slack_h": 43.0, "energy_overhead_pct": 1.6}
+      ],
+      "verdict": "FAIL"
+    },
+    "gpu_count": {
+      "evidence": "exploratory, benchmark jobs",
+      "source": "firstrun_phase0/results/gpu_count/GPU_COUNT.md section 3",
+      "models": 9, "gpu": "V100, vision models, GPU energy only",
+      "rows": [
+        {"label": "Always 1 GPU", "mean_regret_pct": 0.30, "worst_model_regret_pct": 2.56, "best_pick_pct": 77.8, "probe_cost_pct": 0.0},
+        {"label": "Always 2 GPUs", "mean_regret_pct": 1.90, "worst_model_regret_pct": 4.90, "best_pick_pct": 22.2, "probe_cost_pct": 0.0},
+        {"label": "Always 4 GPUs", "mean_regret_pct": 3.17, "worst_model_regret_pct": 7.47, "best_pick_pct": 0.0, "probe_cost_pct": 0.0},
+        {"label": "5-min probe at each count", "mean_regret_pct": 1.31, "worst_model_regret_pct": 4.02, "best_pick_pct": 42.7, "probe_cost_pct": 18.0}
+      ]
+    }
+  },
+
+  "C5_diagnosis_pilot": {
+    "evidence": "exploratory pilot; telemetry-gate result is post hoc",
+    "source": "firstrun_phase0/results/diagnosis_pilot/PILOT.md; criteria analysis/diagnosis_pilot/CRITERIA.md (not committed to git; file dated 2026-10-22 13:13, recording began 13:56)",
+    "setup": "13 jobs (10 faulty, 3 healthy) on one GTX 1660 SUPER, first 3 minutes of telemetry. 5 ran their script for real, 7 reproduced the script's GPU/CPU behaviour with real CUDA kernels, 1 idle interactive session.",
+    "pre_registered_model": "qwen3:8b",
+    "cases": [
+      {"id": "c01", "cause": "CPU workload on GPU node", "class": "GPU unused, CPU busy", "rules": "wrong", "qwen3_8b": "wrong", "coder30b": "right", "coder30b_gated": "right"},
+      {"id": "c06", "cause": "Model not moved to GPU", "class": "GPU unused, CPU busy", "rules": "wrong", "qwen3_8b": "right", "coder30b": "right", "coder30b_gated": "right"},
+      {"id": "c08", "cause": "CPU-only build", "class": "GPU unused, CPU busy", "rules": "right", "qwen3_8b": "right", "coder30b": "right", "coder30b_gated": "right"},
+      {"id": "c09", "cause": "GPU hidden by environment", "class": "GPU unused, CPU busy", "rules": "wrong", "qwen3_8b": "none", "coder30b": "right", "coder30b_gated": "right"},
+      {"id": "c10", "cause": "Hung, waiting for peer", "class": "Nothing running", "rules": "right", "qwen3_8b": "none", "coder30b": "wrong", "coder30b_gated": "right"},
+      {"id": "c12", "cause": "Idle interactive session", "class": "Nothing running", "rules": "right", "qwen3_8b": "right", "coder30b": "right", "coder30b_gated": "right"},
+      {"id": "c02", "cause": "Batch too small", "class": "Low GPU use", "rules": "right", "qwen3_8b": "right", "coder30b": "right", "coder30b_gated": "right"},
+      {"id": "c07", "cause": "Input pipeline bottleneck", "class": "Low GPU use", "rules": "right", "qwen3_8b": "right", "coder30b": "right", "coder30b_gated": "right"},
+      {"id": "c03", "cause": "GPU memory leak", "class": "GPU memory growing", "rules": "right", "qwen3_8b": "right", "coder30b": "wrong", "coder30b_gated": "right"},
+      {"id": "c11", "cause": "Single-GPU code, multi-GPU request", "class": "Some GPUs idle", "rules": "right", "qwen3_8b": "right", "coder30b": "right", "coder30b_gated": "right"},
+      {"id": "c04", "cause": "Healthy (GNN, moderate use)", "class": "Healthy", "rules": "right", "qwen3_8b": "none", "coder30b": "wrong", "coder30b_gated": "right"},
+      {"id": "c05", "cause": "Healthy", "class": "Healthy", "rules": "right", "qwen3_8b": "right", "coder30b": "wrong", "coder30b_gated": "right"},
+      {"id": "c13", "cause": "Healthy", "class": "Healthy", "rules": "right", "qwen3_8b": "right", "coder30b": "right", "coder30b_gated": "right"}
+    ],
+    "totals": {
+      "rules": {"overall": "10/13", "faulty": "7/10"},
+      "qwen3_8b": {"faulty": "7/10", "D1": "FAIL", "D2": "FAIL", "D3": "FAIL", "D4": "FAIL", "gated_post_hoc_overall": "11/13"},
+      "coder30b": {"faulty": "8/10", "healthy_given_a_fault": 2, "D1": "PASS", "D2": "PASS", "D3": "FAIL", "D4": "PASS"},
+      "coder30b_gated_post_hoc": {"overall": "13/13"}
+    }
+  },
+
+  "C6_measurement": {
+    "period_agreement": {
+      "evidence": "development (benchmark jobs, v0.2 strong tier, after the v0.2 confirmation)",
+      "source": "firstrun_phase0/analysis/V03_DEVELOPMENT.md, 'Evidence for the period check'",
+      "nominal_coverage_pct": 90,
+      "rows": [
+        {"cut_min": 10, "group": "Activity and power periods agree", "jobs": 78, "coverage_pct": 92},
+        {"cut_min": 10, "group": "Periods disagree by > 10%", "jobs": 17, "coverage_pct": 65},
+        {"cut_min": 10, "group": "Only one period found", "jobs": 6, "coverage_pct": 83},
+        {"cut_min": 20, "group": "Activity and power periods agree", "jobs": 77, "coverage_pct": 95},
+        {"cut_min": 20, "group": "Periods disagree by > 10%", "jobs": 17, "coverage_pct": 71},
+        {"cut_min": 20, "group": "Only one period found", "jobs": 5, "coverage_pct": 80}
+      ]
+    },
+    "idle_power_w_per_gpu": {
+      "evidence": "exploratory",
+      "rows": [
+        {"gpu": "V100", "watts": [33.3], "measure": "Idle GPUs of real users: total energy / total time (964 GPUs; per-GPU median 27.6 W)", "source": "MIT Supercloud real users; computed from firstrun_realusers per-GPU table, 2026-11-14"},
+        {"gpu": "H100", "watts": [122.5, 132.4], "measure": "Floor power while holding a job (1st percentile of 1-s power), median per workload (diffusion, LLM)", "source": "firstrun_phase0/results/hetero/HETERO_PROBE.md; Elsayed et al. 2026"},
+        {"gpu": "B200", "watts": [193.7, 199.1], "measure": "Floor power while holding a job (1st percentile of 1-s power), median per workload (diffusion, LLM)", "source": "firstrun_phase0/results/hetero/HETERO_PROBE.md; Elsayed et al. 2026"}
+      ]
+    }
+  }
+}

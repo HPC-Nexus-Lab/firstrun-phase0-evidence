@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you refer to this evidence, please cite it as below."
+title: "FirstRun Phase 0 evidence: telemetry-first advice for new GPU workloads"
+authors:
+  - family-names: Lisas
+    given-names: Tautvydas
+    affiliation: "Technological University Dublin"
+date-released: 2026-11-14
+type: dataset
