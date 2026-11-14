@@ -325,7 +325,7 @@ def fig_c5():
     yb = len(cases) + 1.3
     totals = [f"{t['rules']['overall']} right", f"{t['qwen3_8b']['faulty']} faults\nD1 failed",
               f"{t['coder30b']['faulty']} faults,\n2 healthy flagged",
-              f"{t['coder30b_gated_post_hoc']['overall']} right,\nnot yet confirmed"]
+              f"{t['coder30b_gated_post_hoc']['overall']} right\nrule chosen after the\nrun; tested in O4"]
     for j, txt in enumerate(totals):
         ax.text(x0 + j * w + w / 2, yb, txt, ha="center", va="top", fontsize=8.5, color=INK, fontweight="bold")
     ax.text(0.05, yb, "✓ right   ✗ wrong   – no usable answer", fontsize=9, color=INK2, va="top")
