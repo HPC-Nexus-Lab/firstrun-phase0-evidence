@@ -2,11 +2,9 @@
 
 Supporting evidence for the Research Ireland Industry Fellowship proposal **"FirstRun: Risk- and Energy-Aware
 Agentic Onboarding of New Workloads on a Commercial GPU Supercomputer"** (Dr Tautvydas Lisas, Dr Tania Malik, TU Dublin, with
-CloudCIX). The proposal is complete without this page. This repository only shows where its Phase 0 numbers come
-from.
+CloudCIX). 
 
-Phase 0 replayed the FirstRun design **offline on public GPU telemetry**: no agent ran on a live cluster, and no
-customer saw any advice.
+Phase 0 replayed the FirstRun design **offline on public GPU telemetry**
 
 ![The FirstRun loop: Watch, Decide, Explain, Verify](figures/00_firstrun_loop.png)
 
